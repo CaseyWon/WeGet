@@ -295,7 +295,7 @@ npm run build:win
   <img alt="WeGet GitHub Star 增长趋势" src="https://raw.githubusercontent.com/CaseyWon/WeGet/star-history/assets/star-history.svg">
 </picture>
 
-图表由 GitHub Actions 每日自动更新，数据文件发布在独立的 `star-history` 分支。
+图表由 GitHub Actions 每日自动更新，数据文件发布在独立的 `star-history` 分支。仓库暂无 Star 时显示占位状态，获得第一颗 Star 后会自动切换为真实增长曲线。
 
 ## 使用限制
 

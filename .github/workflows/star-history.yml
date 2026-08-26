@@ -25,9 +25,44 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Read current star count
+        id: stars
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          response="$(curl --fail --silent --show-error \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}")"
+          count="$(node -e 'const input = JSON.parse(process.argv[1]); process.stdout.write(String(input.stargazers_count));' "$response")"
+          if [[ ! "$count" =~ ^[0-9]+$ ]]; then
+            echo "Invalid star count: $count" >&2
+            exit 1
+          fi
+          echo "count=$count" >> "$GITHUB_OUTPUT"
 
       - name: Generate and publish charts
+        if: steps.stars.outputs.count != '0'
         uses: xpzouying/star-history@8b1f26dc5e9a17caa75da9351b688509ef312811 # v1
         with:
           branch: star-history
+
+      - name: Generate zero-star placeholders
+        if: steps.stars.outputs.count == '0'
+        run: node .github/scripts/generate-empty-star-history.mjs
+
+      - name: Publish zero-star placeholders
+        if: steps.stars.outputs.count == '0'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan __star_history_publish
+          git reset --quiet
+          git add --force assets/star-history.svg assets/star-history-dark.svg
+          git commit --quiet --message "chore: update star history chart"
+          git push --force origin "HEAD:refs/heads/star-history"
