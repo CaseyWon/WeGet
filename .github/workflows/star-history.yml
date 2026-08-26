@@ -48,18 +48,20 @@ jobs:
       - name: Prepare chart output directory
         run: mkdir --parents assets
 
-      - name: Generate and publish charts
+      - name: Generate source chart
         if: steps.stars.outputs.count != '0'
         uses: xpzouying/star-history@8b1f26dc5e9a17caa75da9351b688509ef312811 # v1
         with:
-          branch: star-history
+          out-light: assets/star-history-source.svg
+          out-dark: assets/star-history-source-dark.svg
+          commit: false
 
-      - name: Generate zero-star placeholders
-        if: steps.stars.outputs.count == '0'
-        run: node .github/scripts/generate-empty-star-history.mjs
+      - name: Render WeGet charts
+        env:
+          STAR_COUNT: ${{ steps.stars.outputs.count }}
+        run: node .github/scripts/render-star-history.mjs
 
-      - name: Publish zero-star placeholders
-        if: steps.stars.outputs.count == '0'
+      - name: Publish charts
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
