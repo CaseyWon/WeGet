@@ -1,0 +1,5 @@
+node_modules/
+.learnings/
+.env
+npm-debug.log*
+*.zip

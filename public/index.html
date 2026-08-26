@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="微信公众号文章资源解析与下载工具">
+  <title>WeGet · 公众号文章资源提取</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="WeGet 首页">
+      <span class="brand-mark"><i></i><i></i><i></i></span>
+      <span>WeGet</span>
+    </a>
+    <div class="header-note"><span class="status-dot"></span>本地解析 · 文件不留存</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span>01</span> 微信内容资产工具</div>
+      <h1>一条链接，<br><em>收齐整篇文章。</em></h1>
+      <p class="hero-copy">提取微信公众号文章里的头图、卡片图、正文图片、视频、音频与附件，保持原始清晰度。</p>
+      <form id="parse-form" class="url-form">
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 13.4a4 4 0 0 0 5.7 0l2.1-2.1a4 4 0 1 0-5.7-5.7l-1.2 1.2m1.9 3.8a4 4 0 0 0-5.7 0l-2.1 2.1a4 4 0 1 0 5.7 5.7l1.2-1.2"/></svg>
+          <input id="article-url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="粘贴 mp.weixin.qq.com 文章链接" required>
+          <button id="paste-button" type="button" class="paste-button">粘贴</button>
+        </div>
+        <button id="parse-button" class="parse-button" type="submit">
+          <span>开始解析</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+        </button>
+      </form>
+      <div class="trust-row">
+        <span><b>✓</b> 原图提取</span><span><b>✓</b> 分类筛选</span><span><b>✓</b> ZIP 打包</span>
+      </div>
+      <div class="hero-stamp" aria-hidden="true"><span>WECHAT</span><strong>ASSET<br>EXTRACTOR</strong><small>2026 / CN</small></div>
+    </section>
+
+    <section id="loading" class="loading-panel" hidden aria-live="polite">
+      <div class="loader-orbit"><span></span></div>
+      <div><strong>正在拆解文章结构</strong><p id="loading-copy">正在连接微信服务器…</p></div>
+      <span class="loading-time">通常需要 3–8 秒</span>
+    </section>
+
+    <section id="results" class="results" hidden>
+      <div class="section-rule"><span>02</span><div></div><p>解析结果</p></div>
+      <article class="article-summary">
+        <div class="summary-cover" id="summary-cover"><span>WG</span></div>
+        <div class="summary-copy">
+          <p class="summary-kicker">SOURCE ARTICLE</p>
+          <h2 id="article-title"></h2>
+          <p id="article-meta"></p>
+          <a id="source-link" target="_blank" rel="noreferrer">查看原文 <span>↗</span></a>
+        </div>
+        <div class="summary-total"><strong id="total-count">0</strong><span>项资源</span></div>
+      </article>
+
+      <div class="toolbar">
+        <div id="filters" class="filters" role="tablist"></div>
+        <div class="toolbar-actions">
+          <button id="select-all" class="text-button" type="button">全选</button>
+          <button id="download-selected" class="download-button" type="button" disabled>
+            <svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 20h14"/></svg>
+            下载所选 <span id="selected-count">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="resource-grid" class="resource-grid"></div>
+      <div id="empty-filter" class="empty-filter" hidden>这个分类里暂时没有资源。</div>
+    </section>
+
+    <section id="intro" class="intro-grid">
+      <article><span>01 / PARSE</span><h3>粘贴文章链接</h3><p>支持公众号文章标准链接与分享后的长链接。</p></article>
+      <article><span>02 / REVIEW</span><h3>预览并筛选</h3><p>头图、卡片图与媒体文件会自动归类。</p></article>
+      <article><span>03 / EXPORT</span><h3>原文件下载</h3><p>单项保存，或把选中资源打包成 ZIP。</p></article>
+    </section>
+  </main>
+
+  <footer><span>WEGET / 微信文章资源提取器</span><span>仅用于你有权下载与使用的内容</span></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

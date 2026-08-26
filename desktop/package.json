@@ -1,0 +1,50 @@
+{
+  "name": "weget-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "author": "WeGet",
+  "description": "WeGet 微信公众号文章资源提取桌面应用",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "test": "node --test",
+    "pack": "electron-builder --dir",
+    "build:win": "electron-builder --win nsis"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "cheerio": "^1.1.2"
+  },
+  "build": {
+    "appId": "com.weget.desktop",
+    "productName": "WeGet Desktop",
+    "electronDist": "node_modules/electron/dist",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "WeGet-Desktop-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^44.0.0",
+    "electron-builder": "^26.15.3"
+  }
+}

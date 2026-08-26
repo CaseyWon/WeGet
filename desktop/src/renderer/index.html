@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' weget-resource: data:; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>WeGet Desktop</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="titlebar">
+    <div class="brand"><span class="brand-mark"><i></i><i></i><i></i></span><strong>WeGet</strong><small>DESKTOP</small></div>
+    <div class="local-status"><span></span>本机处理 · 文件不留存</div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <p class="rail-label">WORKFLOW / 01</p>
+        <nav class="steps" aria-label="工作流程">
+          <div class="step active" data-step="1"><span>01</span><div><strong>解析链接</strong><small>PARSE ARTICLE</small></div></div>
+          <div class="step" data-step="2"><span>02</span><div><strong>筛选资源</strong><small>REVIEW ASSETS</small></div></div>
+          <div class="step" data-step="3"><span>03</span><div><strong>导出文件</strong><small>EXPORT FILES</small></div></div>
+        </nav>
+      </div>
+      <div class="rail-foot">
+        <div class="rail-metric"><strong id="rail-total">—</strong><span>FOUND<br>ASSETS</span></div>
+        <p>支持头图、卡片图、正文图片、视频、音频与附件。</p>
+        <small>WEGET / BUILD 01</small>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <section class="command" id="command-section">
+        <div class="command-copy">
+          <p class="eyebrow"><span>01</span> WECHAT ASSET EXTRACTOR</p>
+          <h1><em>把资源</em><br>都偷过来。</h1>
+          <p>头图、卡片图、正文图片和媒体文件，一次扫清，直接收进本机。</p>
+        </div>
+        <div class="command-stamp" aria-hidden="true"><small>LOCAL</small><strong>ASSET<br>DESK</strong><span>2026 / CN</span></div>
+        <form id="parse-form" class="url-form">
+          <div class="url-field">
+            <svg viewBox="0 0 24 24"><path d="M10.6 13.4a4 4 0 0 0 5.7 0l2.1-2.1a4 4 0 1 0-5.7-5.7l-1.2 1.2m1.9 3.8a4 4 0 0 0-5.7 0l-2.1 2.1a4 4 0 1 0 5.7 5.7l1.2-1.2"/></svg>
+            <input id="article-url" type="url" aria-label="微信公众号文章链接" placeholder="粘贴 mp.weixin.qq.com 文章链接" required>
+            <button id="paste-button" type="button">粘贴</button>
+          </div>
+          <button id="parse-button" class="primary-button" type="submit"><span>开始解析</span><svg viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button>
+        </form>
+        <div class="capabilities"><span>✓ 原图提取</span><span>✓ 自动分类</span><span>✓ 本地导出</span></div>
+      </section>
+
+      <section id="loading" class="loading-state" hidden>
+        <div class="loader"><span></span></div><div><strong>正在拆解文章结构</strong><p id="loading-copy">正在连接微信服务器…</p></div><small>通常需要 3–8 秒</small>
+      </section>
+
+      <section id="results" class="results" hidden>
+        <div class="section-rule"><span>02</span><div></div><p>解析结果</p></div>
+        <article class="article-summary">
+          <div id="summary-cover" class="summary-cover"><span>WG</span></div>
+          <div class="summary-copy"><p>SOURCE ARTICLE</p><h2 id="article-title"></h2><span id="article-meta"></span><button id="source-button" type="button">在浏览器中查看原文 ↗</button></div>
+          <div class="summary-count"><strong id="total-count">0</strong><span>项资源</span></div>
+        </article>
+        <div class="toolbar">
+          <div id="filters" class="filters" role="tablist"></div>
+          <div class="actions"><button id="select-all" class="quiet-button" type="button">全选</button><button id="export-button" class="export-button" type="button" disabled><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 20h14"/></svg><span>导出所选</span><b id="selected-count">0</b></button></div>
+        </div>
+        <div id="resource-grid" class="resource-grid"></div>
+        <div id="empty-filter" class="empty-filter" hidden>这个分类里暂时没有资源。</div>
+      </section>
+
+      <section id="empty-state" class="empty-state">
+        <div class="empty-index">01</div>
+        <div><strong>从一条文章链接开始</strong><p>解析结果会按资源类型整齐陈列在这里。</p></div>
+        <div class="empty-lines"><i></i><i></i><i></i></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="progress" class="progress-toast" hidden><span id="progress-bar"></span><div><strong>正在生成资源包</strong><small id="progress-copy"></small></div></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" type="module"></script>
+</body>
+</html>
