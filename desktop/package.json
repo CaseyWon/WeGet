@@ -10,8 +10,8 @@
     "start": "electron .",
     "dev": "electron .",
     "test": "node --test",
-    "pack": "electron-builder --dir",
-    "build:win": "electron-builder --win nsis"
+    "pack": "electron-builder --dir --config.directories.output=release-unpacked",
+    "build:win": "electron-builder --win nsis --config.directories.output=release-installer"
   },
   "engines": {
     "node": ">=20"
