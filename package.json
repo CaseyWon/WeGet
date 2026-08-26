@@ -2,6 +2,7 @@
   "name": "weget",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "description": "微信公众号文章资源解析与下载工具",
   "type": "module",
   "scripts": {

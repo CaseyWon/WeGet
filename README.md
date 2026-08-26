@@ -8,8 +8,9 @@
 [![Electron](https://img.shields.io/badge/Electron-44-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
 [![Platform](https://img.shields.io/badge/Desktop-Windows%20x64-0078D4?logo=windows11&logoColor=white)](#构建-windows-安装包)
 [![Tests](https://img.shields.io/badge/tests-passing-D8FF46?logoColor=171714)](#测试)
+[![License](https://img.shields.io/badge/license-MIT-D8FF46)](LICENSE)
 
-[Web 版](#运行-web-版) · [桌面版](#运行桌面版) · [构建安装包](#构建-windows-安装包) · [安全设计](#安全设计) · [故障排查](#故障排查)
+[Web 版](#运行-web-版) · [桌面版](#运行桌面版) · [构建安装包](#构建-windows-安装包) · [安全设计](#安全设计) · [故障排查](#故障排查) · [许可证](#许可证)
 
 </div>
 
@@ -292,7 +293,10 @@ npm run build:win
 - 仅下载和使用你有权处理的内容。
 - 不要将该工具用于高频抓取、批量采集或绕过平台访问控制。
 - 微信页面结构变化后，解析规则可能需要同步更新。
-- 仓库目前未附带开源许可证；对外分发或接受外部贡献前应补充 `LICENSE`。
+
+## 许可证
+
+本项目基于 [MIT License](LICENSE) 开源。你可以使用、复制、修改和分发本项目，但必须保留原始版权声明和许可证文本。
 
 ## 相关文档
 
