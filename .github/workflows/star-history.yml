@@ -45,6 +45,9 @@ jobs:
           fi
           echo "count=$count" >> "$GITHUB_OUTPUT"
 
+      - name: Prepare chart output directory
+        run: mkdir --parents assets
+
       - name: Generate and publish charts
         if: steps.stars.outputs.count != '0'
         uses: xpzouying/star-history@8b1f26dc5e9a17caa75da9351b688509ef312811 # v1
