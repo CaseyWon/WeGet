@@ -10,7 +10,7 @@
 [![Tests](https://img.shields.io/badge/tests-passing-D8FF46?logoColor=171714)](#测试)
 [![License](https://img.shields.io/badge/license-MIT-D8FF46)](LICENSE)
 
-[Web 版](#运行-web-版) · [桌面版](#运行桌面版) · [构建安装包](#构建-windows-安装包) · [安全设计](#安全设计) · [故障排查](#故障排查) · [许可证](#许可证)
+[Web 版](#运行-web-版) · [桌面版](#运行桌面版) · [构建安装包](#构建-windows-安装包) · [安全设计](#安全设计) · [Star 趋势](#star-增长趋势) · [许可证](#许可证)
 
 </div>
 
@@ -287,6 +287,15 @@ Electron、NSIS 和 7-Zip 会在首次安装或构建时下载。优先检查 np
 $env:ELECTRON_BUILDER_CACHE = "$PWD\.electron-builder-cache"
 npm run build:win
 ```
+
+## Star 增长趋势
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/CaseyWon/WeGet/star-history/assets/star-history-dark.svg">
+  <img alt="WeGet GitHub Star 增长趋势" src="https://raw.githubusercontent.com/CaseyWon/WeGet/star-history/assets/star-history.svg">
+</picture>
+
+图表由 GitHub Actions 每日自动更新，数据文件发布在独立的 `star-history` 分支。
 
 ## 使用限制
 

@@ -1,0 +1,33 @@
+name: Update star history chart
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/star-history.yml"
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: star-history
+  cancel-in-progress: true
+
+jobs:
+  update:
+    name: Generate star history SVGs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Generate and publish charts
+        uses: xpzouying/star-history@8b1f26dc5e9a17caa75da9351b688509ef312811 # v1
+        with:
+          branch: star-history
