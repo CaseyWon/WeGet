@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480" role="img" aria-labelledby="title description">
+  <title id="title">WeGet GitHub Star 增长趋势，共 1 个 Star</title>
+  <desc id="description">CaseyWon/WeGet · GitHub Stars</desc>
+  <rect width="960" height="480" fill="#F3F0E5"/>
+  <rect x="34" y="34" width="892" height="412" fill="#171714" opacity="0.18"/>
+  <rect x="24" y="24" width="892" height="412" fill="#FFFDF5" stroke="#171714" stroke-width="2"/>
+
+  <text x="60" y="78" fill="#171714" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="14" font-weight="700" letter-spacing="2">WEGET / STAR HISTORY</text>
+  <text x="60" y="130" fill="#171714" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="34" font-weight="800">Star 增长趋势</text>
+  <text x="60" y="158" fill="#68685F" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="15">CaseyWon/WeGet · GitHub Stars</text>
+  <rect x="742" y="66" width="138" height="62" fill="#D8FF46" stroke="#171714" stroke-width="2"/>
+  <text x="811" y="104" text-anchor="middle" fill="#171714" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18" font-weight="800">1 STAR</text>
+
+  <line x1="88" y1="207" x2="88" y2="354" stroke="#C9C6BA" stroke-width="2"/>
+  <line x1="88" y1="354.0" x2="862" y2="354.0" stroke="#C9C6BA" stroke-width="1"/>
+  <text x="76" y="358.0" text-anchor="end" fill="#68685F" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="12">0</text>
+  <line x1="88" y1="280.5" x2="862" y2="280.5" stroke="#C9C6BA" stroke-width="1" stroke-dasharray="5 7"/>
+  <text x="76" y="284.5" text-anchor="end" fill="#68685F" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="12">1</text>
+  <line x1="88" y1="207.0" x2="862" y2="207.0" stroke="#C9C6BA" stroke-width="1" stroke-dasharray="5 7"/>
+  <text x="76" y="211.0" text-anchor="end" fill="#68685F" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="12">2</text>
+  <polygon points="88.0,354 88.0,354.0 850.0,354.0 862.0,280.5 862.0,354" fill="#D8FF46" opacity="0.18"/>
+  <polyline points="88.0,354.0 850.0,354.0 862.0,280.5" fill="none" stroke="#D8FF46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="862.0" cy="280.5" r="9" fill="#D8FF46" stroke="#171714" stroke-width="3"/>
+
+  <text x="88" y="390" fill="#68685F" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="12">START</text>
+  <text x="862" y="390" text-anchor="end" fill="#68685F" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="12">TODAY</text>
+</svg>
