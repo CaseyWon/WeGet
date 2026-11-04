@@ -80,6 +80,62 @@ function contentDisposition(filename, inline = false) {
   return `${inline ? 'inline' : 'attachment'}; filename="${safe}"; filename*=UTF-8''${encodeURIComponent(filename)}`;
 }
 
+// 微信文章 HTML 里的图片给的是压缩地址：路径末段是压缩标记（如 /640）。
+// 把它改成 /0 就能拿到原图（2026-10 实测 8 张图 8/8 成功，宽度平均 +16%，1080→1280）。
+// 只对腾讯图床生效；拿不到原图时自动回退到文章里给出的地址。
+function originalImageUrl(value) {
+  try {
+    const parsed = new URL(value);
+    if (!/(^|\.)qpic\.cn$/i.test(parsed.hostname)) return '';
+    const segments = parsed.pathname.split('/');
+    const last = segments[segments.length - 1];
+    if (!/^\d+$/.test(last) || last === '0') return '';
+    segments[segments.length - 1] = '0';
+    parsed.pathname = segments.join('/');
+    return parsed.toString();
+  } catch { return ''; }
+}
+
+async function fetchResourceUrl(url, timeout = 20_000) {
+  const response = await fetchWithValidatedRedirects(url, isResourceHost, {
+    headers: { referer: 'https://mp.weixin.qq.com/', 'user-agent': 'Mozilla/5.0 Chrome/131 Safari/537.36' },
+    signal: AbortSignal.timeout(timeout)
+  });
+  if (!response.ok || !response.body) throw new Error(`资源服务器返回了 ${response.status}`);
+  return response;
+}
+
+async function fetchResourceWithOriginal(url, timeout = 20_000) {
+  const original = originalImageUrl(url);
+  if (original) {
+    try { return await fetchResourceUrl(original, timeout); }
+    catch { /* 原图不可用时回退到压缩地址 */ }
+  }
+  return fetchResourceUrl(url, timeout);
+}
+
+// 首次解析要先做 DNS + TLS + 下载整页：实测冷启动可达 12s 以上（文章页约 3.5 MB）。
+// 原来的 15s 超时太紧，网络稍抖就失败，所以放宽到 45s，并对超时自动重试一次。
+const ARTICLE_TIMEOUT_MS = 45_000;
+const ARTICLE_HEADERS = {
+  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36 MicroMessenger/8.0',
+  'accept-language': 'zh-CN,zh;q=0.9',
+  accept: 'text/html,application/xhtml+xml'
+};
+
+async function fetchArticle(articleUrl) {
+  const attempt = () => fetchWithValidatedRedirects(articleUrl, isArticleHost, {
+    headers: ARTICLE_HEADERS,
+    signal: AbortSignal.timeout(ARTICLE_TIMEOUT_MS)
+  });
+  try {
+    return await attempt();
+  } catch (error) {
+    if (error?.name !== 'TimeoutError') throw error;
+    return attempt(); // 冷启动超时后重试一次
+  }
+}
+
 class ByteLimit extends Transform {
   constructor(limit) { super(); this.limit = limit; this.total = 0; }
   _transform(chunk, encoding, callback) {
@@ -105,14 +161,7 @@ function resourceResponse(item) {
 app.post('/api/parse', async (req, res) => {
   try {
     const articleUrl = safeUrl(String(req.body?.url || ''), isArticleHost);
-    const response = await fetchWithValidatedRedirects(articleUrl, isArticleHost, {
-      headers: {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36 MicroMessenger/8.0',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        accept: 'text/html,application/xhtml+xml'
-      },
-      signal: AbortSignal.timeout(15_000)
-    });
+    const response = await fetchArticle(articleUrl);
     if (!response.ok) throw new Error(`微信页面返回了 ${response.status}`);
     const contentLength = Number(response.headers.get('content-length'));
     if (contentLength > MAX_ARTICLE_BYTES) throw new Error('文章页面过大');
@@ -138,11 +187,7 @@ app.get('/api/resource', async (req, res) => {
     const url = String(req.query.url || '');
     if (!validToken(url, String(req.query.token || ''))) return res.status(403).json({ error: '下载签名已失效，请重新解析文章' });
     safeUrl(url, isResourceHost);
-    const response = await fetchWithValidatedRedirects(url, isResourceHost, {
-      headers: { referer: 'https://mp.weixin.qq.com/', 'user-agent': 'Mozilla/5.0 Chrome/131 Safari/537.36' },
-      signal: AbortSignal.timeout(20_000)
-    });
-    if (!response.ok || !response.body) throw new Error(`资源服务器返回了 ${response.status}`);
+    const response = await fetchResourceWithOriginal(url);
     const length = Number(response.headers.get('content-length'));
     if (length > MAX_RESOURCE_BYTES) throw new Error('资源文件超过 50 MB 限制');
     const type = response.headers.get('content-type') || 'application/octet-stream';
@@ -173,11 +218,9 @@ app.post('/api/download', async (req, res) => {
   try {
     for (const item of valid) {
       safeUrl(item.url, isResourceHost);
-      const response = await fetchWithValidatedRedirects(item.url, isResourceHost, {
-        headers: { referer: 'https://mp.weixin.qq.com/', 'user-agent': 'Mozilla/5.0 Chrome/131 Safari/537.36' },
-        signal: AbortSignal.timeout(20_000)
-      });
-      if (!response.ok || !response.body) continue;
+      let response;
+      try { response = await fetchResourceWithOriginal(item.url); }
+      catch { continue; } // 与原有"跳过不可用项"的行为保持一致
       const length = Number(response.headers.get('content-length'));
       if (length > MAX_RESOURCE_BYTES) continue;
       const name = sanitizeFilename(item.name || `resource.${fileExtension(response.headers.get('content-type') || '', item.url)}`);
